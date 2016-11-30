@@ -7,6 +7,7 @@ function ln=localnormalize(IM,sigma1,sigma2)
 %
 %  Contributed by Guanglei Xiong (xgl99@mails.tsinghua.edu.cn)
 %  at Tsinghua University, Beijing, China.
+IM = double(IM);
 epsilon=1e-1;
 halfsize1=ceil(-norminv(epsilon/2,0,sigma1));
 size1=2*halfsize1+1;
@@ -16,4 +17,4 @@ gaussian1=fspecial('gaussian',size1,sigma1);
 gaussian2=fspecial('gaussian',size2,sigma2);
 num=IM-imfilter(IM,gaussian1);
 den=sqrt(imfilter(num.^2,gaussian2));
-ln=num./den;
+ln=mat2gray(num./den);
