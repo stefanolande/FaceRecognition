@@ -1,6 +1,8 @@
 clear;
-input_dir = 'training/';
+input_dir = 'training/processed/';
 image_dims = [192, 168];
+
+soglia = 0.001;
 
 filenames = dir(fullfile(input_dir, '*.pgm'));
 num_images = numel(filenames);
@@ -14,7 +16,7 @@ images = zeros(dim(1), num_images);
 
 for n = 1:num_images
     filename = fullfile(input_dir, filenames(n).name);
-    img = localnormalize(imread(filename), 20, 25);
+    img = imread(filename);
     images(:, n) = img(:);
 end
 
@@ -36,7 +38,7 @@ fprintf('step 5 done\n');
 features = evectors' * shifted_images;
 fprintf('step 6 done\n');
 
-input_dir = 'test/';
+input_dir = 'test/processed/';
 
 name = '';
 while(strcmp(name, 'esci')==0)
@@ -44,7 +46,7 @@ while(strcmp(name, 'esci')==0)
     if(strcmp(name , 'esci')==0)
         % calculate the similarity of the input to each training image
         filename = fullfile(input_dir, name);
-        input_image = localnormalize(imread(filename), 20, 25);
+        input_image = double(imread(filename));
         feature_vec = evectors' * (input_image(:) - mean_face);
         similarity_score = arrayfun(@(n) 1 / (1 + norm(features(:,n) - feature_vec)), 1:num_images);
 
@@ -53,6 +55,13 @@ while(strcmp(name, 'esci')==0)
 
         % display the result
         figure, imshow([mat2gray(input_image) mat2gray(reshape(images(:,match_ix), image_dims))]);
-        title(sprintf('matches %s, score %f', filenames(match_ix).name, match_score));
+        if(match_score>soglia)
+            title(sprintf('matches %s, score %f', filenames(match_ix).name, match_score));
+            xlabel('Accepted');
+        else
+            title(sprintf('closest %s, score %f', filenames(match_ix).name, match_score));
+            xlabel('Rejected');
+        end
+
     end
 end
