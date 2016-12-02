@@ -42,10 +42,13 @@ input_dir = 'test/processed/';
 
 name = '';
 while(strcmp(name, 'esci')==0)
-    name = input('Inserisci il nome dell''immagine da riconoscere o esci: ', 's');
+    
+    
     if(strcmp(name , 'esci')==0)
+        [filename] = imgetfile(); %This function permits to choose an input image by graphic interface
+        fprintf('Come immagine hai scelto: %s \n',filename);
         % calculate the similarity of the input to each training image
-        filename = fullfile(input_dir, name);
+        %filename = fullfile(input_dir, name);
         input_image = double(imread(filename));
         feature_vec = evectors' * (input_image(:) - mean_face);
         similarity_score = arrayfun(@(n) 1 / (1 + norm(features(:,n) - feature_vec)), 1:num_images);
@@ -62,6 +65,7 @@ while(strcmp(name, 'esci')==0)
             title(sprintf('closest %s, score %f', filenames(match_ix).name, match_score));
             xlabel('Rejected');
         end
-
     end
+    name = input('Vuoi uscire inserisci esci, altrimenti premi invio: ', 's');
+
 end
