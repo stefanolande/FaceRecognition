@@ -1,8 +1,6 @@
 clear;
-input_dir = 'training/processed/';
+input_dir = 'training/processed';
 image_dims = [192, 168];
-
-soglia = 0.00172;
 
 filenames = dir(fullfile(input_dir, '*.pgm'));
 num_images = numel(filenames);
@@ -30,7 +28,7 @@ fprintf('step 1 2 done\n');
 fprintf('step 3 4 done\n');
  
 % step 5: only retain the top 'num_eigenfaces' eigenvectors (i.e. the principal components)
-num_eigenfaces = 20;
+num_eigenfaces = 100;
 evectors = evectors(:, 1:num_eigenfaces);
 fprintf('step 5 done\n');
  
@@ -38,14 +36,35 @@ fprintf('step 5 done\n');
 features = evectors' * shifted_images;
 fprintf('step 6 done\n');
 
-input_dir = 'test/processed/';
+% display the eigenvalues
+normalised_evalues = evalues / sum(evalues);
+figure, plot(cumsum(normalised_evalues));
+xlabel('No. of eigenvectors'), ylabel('Variance accounted for');
+ylim([0 1]), grid on;
 
-name = '';
-while(strcmp(name, 'esci')==0)
-    name = input('Inserisci il nome dell''immagine da riconoscere o esci: ', 's');
-    if(strcmp(name , 'esci')==0)
+%genera la curva roc
+input_dir = 'test/processed';
+test_filenames = dir(fullfile(input_dir, '*.pgm'));
+num_testimages = numel(test_filenames);
+
+specificity = [];
+sensitivity = [];
+TPvec = [];
+TNvec = [];
+i = 1;
+
+for soglia=0:0.0002:0.005
+    
+    TP=0;
+    TN=0;
+    FP=0;
+    FN=0;
+    
+    fprintf('%.4f\n', soglia);
+    
+    for n = 1:num_testimages   
         % calculate the similarity of the input to each training image
-        filename = fullfile(input_dir, name);
+        filename = fullfile(input_dir, test_filenames(n).name);
         input_image = double(imread(filename));
         feature_vec = evectors' * (input_image(:) - mean_face);
         similarity_score = arrayfun(@(n) 1 / (1 + norm(features(:,n) - feature_vec)), 1:num_images);
@@ -53,15 +72,30 @@ while(strcmp(name, 'esci')==0)
         % find the image with the highest similarity
         [match_score, match_ix] = max(similarity_score);
 
-        % display the result
-        figure, imshow([mat2gray(input_image) mat2gray(reshape(images(:,match_ix), image_dims))]);
-        if(match_score>soglia)
-            title(sprintf('matches %s, score %f', filenames(match_ix).name, match_score));
-            xlabel('Accepted');
+        found_name = filenames(match_ix).name;
+        true_name = test_filenames(n).name;
+        
+        true_class = strcmp(true_name(1:7), found_name(1:7));
+        pred_class = match_score>soglia;
+        
+        if(true_class==0 && pred_class==0)
+            TN=TN+1;
+        elseif(true_class==1 && pred_class==1)
+            TP = TP + 1;
+        elseif(true_class==1 && pred_class==0)
+            FN = FN + 1;
         else
-            title(sprintf('closest %s, score %f', filenames(match_ix).name, match_score));
-            xlabel('Rejected');
+            FP = FP + 1;
         end
-
     end
+    
+    sensitivity(i)=TP/(TP+FN);
+    specificity(i)=TN/(TN+FP);
+    TPvec(i) = TP;
+    TNvec(i) = TN;
+    
+    i=i+1;
 end
+
+plot(1-specificity,sensitivity);
+
