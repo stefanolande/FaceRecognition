@@ -55,10 +55,10 @@ while(strcmp(name, 'esci')==0)
 
         % display the result
         figure, imshow([mat2gray(input_image) mat2gray(reshape(images(:,match_ix), image_dims))]);
-        if(match_score>soglia)
+        if(match_score>soglia) %If the match-score of the more similar image is higher than the threshold, the image is Accepted
             title(sprintf('matches %s, score %f', filenames(match_ix).name, match_score));
             xlabel('Accepted');
-        else
+        else %Otherwise the image is rejected
             title(sprintf('closest %s, score %f', filenames(match_ix).name, match_score));
             xlabel('Rejected');
         end
