@@ -1,6 +1,6 @@
 clear;
-input_dir = 'training/';
-output_dir = 'training/processed/';
+input_dir = 'dataset2/test/';
+output_dir = 'dataset2/test/processed/';
 image_dims = [192, 168];
 
 filenames = dir(fullfile(input_dir, '*.pgm'));

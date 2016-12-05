@@ -1,5 +1,5 @@
 clear;
-input_dir = 'training/processed';
+input_dir = 'dataset2/training/processed';
 image_dims = [192, 168];
 
 filenames = dir(fullfile(input_dir, '*.pgm'));
@@ -38,7 +38,7 @@ fprintf('step 6 done\n');
 % ylim([0 1]), grid on;
 
 %genera la curva roc
-input_dir = 'test/processed';
+input_dir = 'dataset2/test/processed';
 test_filenames = dir(fullfile(input_dir, '*.pgm'));
 num_testimages = numel(test_filenames);
 
