@@ -1,9 +1,9 @@
 clear;
-input_dir = 'dataset2/training/processed/';
+input_dir = 'dataset1/training/processed/';
 image_dims = [192, 168];
 
-%Questa � la sogllia migliore ricavata mediante compromesso tra da FP e FN
-soglia = 0.00172; 
+%Questa e' la soglia migliore ricavata mediante compromesso tra da FP e FN
+soglia = 0.00049; 
 
 filenames = dir(fullfile(input_dir, '*.pgm'));
 num_images = numel(filenames);
@@ -47,7 +47,7 @@ while(strcmp(name, 'esci')==0)
    
     [filename] = imgetfile(); %Scelta dell'immagine da gui
     
-    %calcola la similarit� dell'immagine in input con ogni immagine nel
+    %calcola la similarita' dell'immagine in input con ogni immagine nel
     %training set
     input_image = double(imread(filename));
     [pathstr_notUsed,current_name] = fileparts(filename);
@@ -55,13 +55,13 @@ while(strcmp(name, 'esci')==0)
     feature_vec = evectors' * (input_image(:) - mean_face);
     similarity_score = arrayfun(@(n) 1 / (1 + norm(features(:,n) - feature_vec)), 1:num_images);
 
-    %trova l'immagine con la similarit� pi� alta
+    %trova l'immagine con la similarita' piu' alta
     [match_score, match_ix] = max(similarity_score);
 
     %mostra il risultato
     figure, imshow([mat2gray(input_image) mat2gray(reshape(images(:,match_ix), image_dims))]);
     if(match_score>soglia)
-        %se la similarit� � pi� alta della soglia accettiamo il riconoscimento
+        %se la similarita' e' piu' alta della soglia accettiamo il riconoscimento
         title(sprintf('matches %s, score %f', filenames(match_ix).name, match_score));
         xlabel('Accepted');
     else
