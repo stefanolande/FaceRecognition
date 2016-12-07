@@ -219,7 +219,8 @@ if verbose
 end
 
 if p<=alpha
-    ButtonName = questdlg('Do you want to input the true prevalence?', 'Prevalence Question', 'Yes', 'No', 'Yes');
+    %ButtonName = questdlg('Do you want to input the true prevalence?', 'Prevalence Question', 'Yes', 'No', 'Yes');
+    ButtonName = 'No';
     if strcmp(ButtonName,'Yes')
         ButtonName = questdlg('Do you want to input the true prevalence as:', 'Prevalence Question', 'Ratio', 'Probability', 'Ratio');
         switch ButtonName
