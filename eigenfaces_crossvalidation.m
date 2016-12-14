@@ -1,5 +1,5 @@
 clear;
-input_dir = 'yale_processed/'; %Cambio path con path relativo
+input_dir = 'yale_processed/';
 image_dims = [192, 168];
 
 filenames = dir(fullfile(input_dir, '*.pgm'));
@@ -20,23 +20,19 @@ for n = 1:num_images
     subjects(n, :) = filenames(n).name(6:7);
 end
 
-matrix= scegliImmagine(subjects);
+[testIdx, trainIdx] = tenfoldvalidation(subjects);
 
-CVO = cvpartition(subjects,'k',10);
 
 AUCSum = 0;
 
-for i = 1:CVO.NumTestSets
+for i = 1:10
     
-    fprintf('fold %d of %d\n', i, CVO.NumTestSets);
+    fprintf('\nfold %d of %d\n', i, 10);
     
-    trIdx = CVO.training(i);
-    teIdx = CVO.test(i);
-    
-    trainingImages =  images(:, trIdx);
-    testImages =  images(:, teIdx);
-    trainingSubjects = subjects(trIdx, :);
-    testSubjects = subjects(teIdx, :);
+    trainingImages =  images(:, trainIdx(:,i));
+    testImages =  images(:, testIdx(:,i));
+    trainingSubjects = subjects(trainIdx(:,i), :);
+    testSubjects = subjects(testIdx(:,i), :);
     
     num_images = size(trainingImages,2);
     
@@ -56,9 +52,10 @@ for i = 1:CVO.NumTestSets
     fprintf('training step 6 done\n');
     
     %calcola ROC e AUC
-    ROCv = zeros(CVO.TestSize(i),2);
+    testSize = size(testIdx(testIdx(:,1)==1),1); %numero di istanze di test, ottenute contando gli uno nella matrice
+    ROCv = zeros(testSize,2);
     
-    for j = 1:CVO.TestSize
+    for j = 1:testSize
            
         input_image = double(testImages(j));
         feature_vec = evectors' * (input_image(:) - mean_face);
@@ -81,6 +78,6 @@ for i = 1:CVO.NumTestSets
 
 end
 
-avgAUC = AUCSum / CVO.NumTestSets;
-fprintf('End!`n Average AUC: %f\n', avgAUC);
+avgAUC = AUCSum / 10;
+fprintf('End!\n Average AUC: %f\n', avgAUC);
 
