@@ -1,5 +1,5 @@
 clear;
-input_dir = '/home/stefano/FaceRecognition/yale_processed/';
+input_dir = 'yale_processed/'; %Cambio path con path relativo
 image_dims = [192, 168];
 
 filenames = dir(fullfile(input_dir, '*.pgm'));
@@ -12,12 +12,15 @@ dim = size(img(:));
 images = zeros(dim(1), num_images);
 subjects = char(zeros(num_images, 2));
 
+
 for n = 1:num_images
     filename = fullfile(input_dir, filenames(n).name);
     img = imread(filename);
     images(:, n) = img(:);
     subjects(n, :) = filenames(n).name(6:7);
 end
+
+matrix= scegliImmagine(subjects);
 
 CVO = cvpartition(subjects,'k',10);
 
