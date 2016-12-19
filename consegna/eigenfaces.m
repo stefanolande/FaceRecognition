@@ -53,14 +53,8 @@ while(strcmp(name, 'esci')==0)
     [pathstr_notUsed,current_name] = fileparts(filename);
     fprintf('Immagine scelta: %s \n',current_name);
     feature_vec = evectors' * (input_image(:) - mean_face);
-    %similarity_score = arrayfun(@(n) 1 / (1 + norm(features(:,n) - feature_vec)), 1:num_images);
+    similarity_score = arrayfun(@(n) 1 / (1 + norm(features(:,n) - feature_vec)), 1:num_images);
 
-    similarity_score = zeros(1, num_images);
-
-    for i = 1 :num_images
-        similarity_score(i) = 1 / (1 + norm(features(:,i) - feature_vec));
-    end
-    
     %trova l'immagine con la similarita' piu' alta
     [match_score, match_ix] = max(similarity_score);
 
