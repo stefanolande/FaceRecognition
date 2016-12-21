@@ -1,4 +1,4 @@
-function [match_score, match_image] = recognize(gallery, gallery_features, probe_features)
+function [match_score, match_image, class] = recognize(gallery, classes, gallery_features, probe_features)
 %RECOGNIZE Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -16,6 +16,7 @@ end
 
 match_image = mat2gray(reshape(gallery(:,match_id), [192, 168]));
 
+class = classes(match_id);
 
 end
 

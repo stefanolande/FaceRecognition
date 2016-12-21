@@ -1,19 +1,8 @@
-function [gallery, mean_face, evectors,  gallery_features] = training()
+function [mean_face, evectors,  gallery_features] = training(gallery)
 %TRAINING Summary of this function goes here
 %   Detailed explanation goes here
 
-input_dir = 'dataset1/training/processed/';
-dim = [192, 168];
-
-%salva le immagini nelle colonne della matrice gallery
-gallery = zeros(dim(1), num_images);
-
-for n = 1:num_images
-    filename = fullfile(input_dir, filenames(n).name);
-    img = imread(filename);
-    gallery(:, n) = img(:);
-end
-fprintf('Lettura immagini completata\n');
+num_images = size(gallery, 2);
 
 % step 1 and 2: trova la faccia media e sottraila ad ogni immagine
 mean_face = mean(gallery, 2);
