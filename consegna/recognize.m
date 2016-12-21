@@ -14,7 +14,7 @@ end
 %trova l'indice dell'immagine con la similarita' piu' alta
 [match_score, match_id] = max(similarity_scores);
 
-match_image = mat2gray(reshape(gallery(:,match_id), [192, 168]));
+match_image = gallery(:,match_id);
 
 class = classes(match_id);
 
