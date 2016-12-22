@@ -18,23 +18,26 @@ soglia = 0.00049;
 % ed infine la dimensione delle immagini
 [gallery, classes, image_size] = read_gallery(path);
 
-
+% Richiamiamo il metodo esterno training passando come parametro la gallery
+% contenente tutte le immagini, questa ci restituisce la faccia media, gli
+% autovettori ed infine le feature della gallery
 [mean_face, evectors,  gallery_features] = training(gallery);
 
-
-name = '';
-while(strcmp(name, 'esci')==0)    
+% La stringa flag verrà usata per ver verificare se l'utente vuole
+% continuare ad utilizzare il programma o meno
+flag = '';
+while(strcmp(flag, 'esci')==0)    
    
-    [filename] = imgetfile(); %Scelta dell'immagine da gui
+    [filename] = imgetfile(); %Scelta dell'immagine da GUI
     
     %calcola la similarita' dell'immagine in input con ogni immagine nel
     %training set
     probe = imread(filename);
-    probe = preprocess(probe);
-    [pathstr_notUsed,current_name] = fileparts(filename);
-    fprintf('Immagine scelta: %s \n',current_name);
+    probe = preprocess(probe); %viene eseguito il preprocessing sull'immagine scelta dall'utente
+    [pathstr_notUsed,current_name] = fileparts(filename); %viene estratto il node del soggetto scelto dall'untete
+    fprintf('Immagine scelta: %s \n',current_name);% e viene stampato a video
     
-    true_class = str2double(current_name(6:7));
+    true_class = str2double(current_name(6:7)); % questa variabile conterrà il nome del soggetto scelto dall'utente
     
     probe_features = get_features(evectors, mean_face, probe);
     [match_score, match_image, recognized_class] = recognize(gallery, classes, gallery_features, probe_features);    
@@ -54,7 +57,7 @@ while(strcmp(name, 'esci')==0)
         suptitle(sprintf('Rejected, score %f', match_score));
     end
     
-    name = input('Se vuoi uscire inserisci esci, altrimenti premi invio: ', 's');
+    flag = input('Se vuoi uscire inserisci esci, altrimenti premi invio: ', 's');
 
 end
 fprintf('\nRiconoscimento facciale terminato!\n\n');

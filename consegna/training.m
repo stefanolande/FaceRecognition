@@ -1,7 +1,12 @@
-function [mean_face, evectors,  gallery_features] = training(gallery)
-%TRAINING Summary of this function goes here
-%   Detailed explanation goes here
+% Questa funzione riceve in ingresso la gallery (contenente le immagini) e
+% ne esegue il training, restituendo al chiamante la faccia media, gli
+% autovettori e le feautures della gallery
 
+function [mean_face, evectors,  gallery_features] = training(gallery)
+
+% Considerato che gallery è una matrice contenente le immagini per colonne
+% (e quindi ogni colonna è una immagine), allora il numero di immagini
+% presenti in gallery sono proprio il numero di colonne.
 num_images = size(gallery, 2);
 
 % step 1 and 2: trova la faccia media e sottraila ad ogni immagine
