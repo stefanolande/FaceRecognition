@@ -21,7 +21,7 @@ fprintf('Inizio caricamento immagini\n');
 % Mettiamo le immagini per colonna, ogni colonna rappresenta una immagine
 for n = 1:num_images
     filename = fullfile(path, filenames(n).name);
-    img = imread(filename);
+    img = imread(filename); 
     gallery(:, n) = img(:); %poniamo l'immagine corrente lungo la colonna "n" corrente della gallery
     classes(n) = str2double(filenames(n).name(6:7)); %poniamo in classes(n) l'identificativo del soggetto corrente
 end

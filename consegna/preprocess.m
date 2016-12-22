@@ -2,9 +2,6 @@
 % in modo tale da rendere uniformi tutte le immagini e cercando di
 % eliminare i vari rumori.
 
-function Y=preprocess(X)
-
-img = DCT_normalization(X);
-%Y = mat2gray(img);
-Y = img;
+function img=preprocess(X)
+    img = DCT_normalization(X); %richiamiamo la funzione DTC_normalization presente nella cartella "libs"
 end

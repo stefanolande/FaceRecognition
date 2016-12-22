@@ -44,13 +44,16 @@ while(strcmp(flag, 'esci')==0)
         
     %mostra il risultato
     figure;
-    subplot(1,2,1); imshow(mat2gray(probe));
+    subplot(1,2,1); imshow(mat2gray(probe)); %Mostra l'iimagine scelta dall'utente
     title(sprintf('Probe: subject %d', true_class));
     
-    subplot(1,2,2); imshow(mat2gray(reshape(match_image, image_size)));
+    subplot(1,2,2); imshow(mat2gray(reshape(match_image, image_size))); % Mostra l'immagine più simile
     title(sprintf('Closest: subject %d', recognized_class));
     
-    if(match_score>soglia)
+    % Se l'immagine più simile trovata ha un valore (match_score) maggiore
+    % della soglia scelta, allora il soggetto viene accettato. Altrimenti
+    % no
+    if(match_score>soglia) 
         %se la similarita' e' piu' alta della soglia accettiamo il riconoscimento
         suptitle(sprintf('Accepted, score %f', match_score));
     else
