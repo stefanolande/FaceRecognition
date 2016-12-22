@@ -1,12 +1,23 @@
 clear;
 
+% Aggiungiamo il path relativo alle librerie che utilizzaziamo
 addpath libs;
 
+% Path realtivo della cartella in cui sono presenti le immagini dei
+% soggetti gia processati
 path = '../dataset1/training/processed/';
 
+% Valore soglia scelto, al di sotto della quale il soggetto viene rifiutato 
 soglia = 0.00049; 
 
+% Richiamiamo il metodo esterno read_gallery() che si occupa di leggere
+% tutte le immagini presenti nel path passato in ingresso alla funzione.
+% La funzione read_gallery restituisce una matrice gallery contenente tutte
+% le immagine poste in colonna, una matrice classes che contiene gli
+% identificatori dei soggetti (permette di sapere che soggetto si tratta nella gallery)
+% ed infine la dimensione delle immagini
 [gallery, classes, image_size] = read_gallery(path);
+
 
 [mean_face, evectors,  gallery_features] = training(gallery);
 

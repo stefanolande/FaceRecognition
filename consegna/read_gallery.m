@@ -15,6 +15,8 @@ image_size = size(img);
 gallery = zeros(dim(1), num_images);
 classes = zeros(num_images, 1);
 
+fprintf('Inizio caricamento immagini\n');
+
 % Mettiamo ogni immagine in una riga della matrice
 for n = 1:num_images
     filename = fullfile(path, filenames(n).name);
@@ -23,7 +25,7 @@ for n = 1:num_images
     classes(n) = str2double(filenames(n).name(6:7));
 end
 
-fprintf('Lettura immagini completata\n');
+fprintf('Caricamento immagini completata\n');
 
 end
 

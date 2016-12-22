@@ -50,7 +50,7 @@ for k=1:10
     end 
 end
 
-testIdx = ~trainIdx;
+testIdx = ~trainIdx; 
 
 end
 

@@ -23,4 +23,3 @@ gallery_features = evectors' * shifted_images;
 fprintf('step 6 done\n');
 
 end
-
