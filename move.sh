@@ -1,3 +1,4 @@
+# Questo script si occupa di prelevare in modo random una immagine per cartella
 #!/bin/bash
 var=`ls -1|wc -l`
 a=1
