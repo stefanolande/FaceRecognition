@@ -1,16 +1,19 @@
+%Questa funzione riceve in ingresso il path in cui sono presenti le
+%immagini, e restituisce una matrice contenente ogni immagine presente
+%posta una per colonna. Restituisce in'oltre la dimensione delle immagini
+%(192*168) ed infine l'identificativo (classe) del soggetto di ogni immagine
 function [ gallery, classes, image_size ] = read_gallery( path )
-%READ_GALLERY Summary of this function goes here
-%   Detailed explanation goes here
 
-filenames = dir(fullfile(path, '*.pgm'));
-num_images = numel(filenames);
+
+filenames = dir(fullfile(path, '*.pgm'));%prendiamo il percorso completo
+num_images = numel(filenames);%calcoliamo il numero di immagini presenti
 
 %leggi la prima immagine per ottenere le dimensioni
 filename = fullfile(path, filenames(1).name);
-img = imread(filename);
+img = imread(filename);%leggiamo l'immagine (la prima)
 dim = size(img(:));
 
-image_size = size(img);
+image_size = size(img);%img size contiene la dimensione dell'immagine (tutte a 192*168)
 
 % Gallery e Classes vengono inizializzati a zero
 gallery = zeros(dim(1), num_images); 
