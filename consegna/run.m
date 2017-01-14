@@ -5,7 +5,7 @@ addpath libs;
 
 % Path realtivo della cartella in cui sono presenti le immagini dei
 % soggetti gia processati
-path = '../dataset1/training/processed/';
+path = '../dataset2/training/processed/';
 
 % Valore soglia scelto, al di sotto della quale il soggetto viene rifiutato 
 soglia = 0.00049; 
