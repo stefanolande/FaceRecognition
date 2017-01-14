@@ -9,7 +9,7 @@ function [mean_face, evectors,  gallery_features] = training(gallery)
 % presenti in gallery sono proprio il numero di colonne.
 num_images = size(gallery, 2);
 
-% step 1 and 2: trova la faccia media e sottraila ad ogni immagine
+% step 1 and 2: trova la faccia media e la sottrae ad ogni immagine
 mean_face = mean(gallery, 2);
 shifted_images = gallery - repmat(mean_face, 1, num_images);
 fprintf('step 1 2 done\n');
